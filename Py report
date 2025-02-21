@@ -1,0 +1,45 @@
+import time
+import requests
+from colorama import Fore, Style
+
+def slow_print(text, speed=0.2):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(speed)
+    print()  # برای رفتن به خط بعد
+
+slow_print(Fore.GREEN + "mine - smp" + Style.RESET_ALL)
+
+# دریافت ID تلگرام
+telegram_id = input("لطفاً یک ID عددی تلگرام وارد کنید: ")
+
+# دریافت متن گزارش
+report_text = input("لطفاً متن گزارش را وارد کنید: ")
+
+# دریافت تعداد درخواست
+request_count = int(input("تعداد درخواست‌ها را وارد کنید: "))
+
+# توکن ربات تلگرام
+token = "token"
+url = f"https://api.telegram.org/bot{token}/sendMessage"
+
+successful_reports = 0
+
+for _ in range(request_count):
+    payload = {
+        'chat_id': telegram_id,
+        'text': report_text
+    }
+    
+    response = requests.post(url, json=payload)
+    
+    if response.status_code == 200:
+        successful_reports += 1
+    else:
+        print("یک خطا رخ داد:", response.json())
+
+# اعلام تعداد موفقیت‌های گزارش
+print(f"تعداد موفق گزارش‌ها: {successful_reports}")
+
+# چاپ امضا
+slow_print(Fore.RED + "TELEGRAM : @mine_hoop" + Style.RESET_ALL)
